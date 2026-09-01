@@ -1,5 +1,7 @@
 import { supabase } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const [clients, subscriptions, payments, appointments, settings, services] = await Promise.all([
     supabase.from("clients").select("*").order("name"),
