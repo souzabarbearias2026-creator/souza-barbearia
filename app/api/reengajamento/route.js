@@ -27,12 +27,13 @@ export async function POST(request) {
     "Oi {nome}! Faz um tempo que a gente não se vê por aqui. Bora marcar um horário?";
   const body = template.replace("{nome}", client.name);
 
-  await resend.emails.send({
+  const { error: sendError } = await resend.emails.send({
     from: process.env.EMAIL_FROM,
     to: client.email,
     subject: "Sentimos sua falta!",
     text: body,
   });
+  if (sendError) return Response.json({ error: sendError.message }, { status: 502 });
 
   return Response.json({ ok: true });
 }

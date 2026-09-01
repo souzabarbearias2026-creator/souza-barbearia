@@ -50,10 +50,11 @@ async function sendEmail(row, kind, daysLeft) {
       ? `Oi ${row.name}, notamos que sua mensalidade venceu há ${Math.abs(daysLeft)} dia(s). Bora regularizar pra manter seu horário garantido?`
       : `Oi ${row.name}, sua mensalidade vence em ${daysLeft} dia(s). Já pode renovar e garantir seu próximo corte!`;
 
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: process.env.EMAIL_FROM,
     to: row.email,
     subject,
     text: body,
   });
+  if (error) console.error(`Falha ao enviar pra ${row.email}:`, error.message);
 }
